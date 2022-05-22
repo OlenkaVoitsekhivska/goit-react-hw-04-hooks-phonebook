@@ -6,15 +6,10 @@ import Form from './Form/Form';
 import Filter from './Filter/Filter';
 
 function App() {
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState(
+    JSON.parse(localStorage.getItem('contacts')) ?? []
+  );
   const [filter, setFilter] = useState('');
-
-  useEffect(() => {
-    if (localStorage.contacts) {
-      const contacts = localStorage.getItem('contacts');
-      setContacts(JSON.parse(contacts));
-    }
-  }, []);
 
   useEffect(() => {
     localStorage.setItem('contacts', JSON.stringify(contacts));
