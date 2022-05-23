@@ -4,27 +4,17 @@ import style from './Form.module.css';
 import PropTypes from 'prop-types';
 
 function Form({ onSubmit }) {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [input, setInput] = useState({ name: '', number: '' });
 
   const handleInputChange = e => {
-    switch (e.currentTarget.name) {
-      case 'name':
-        setName(e.currentTarget.value);
-        break;
-      case 'number':
-        setNumber(e.currentTarget.value);
-        break;
-      default:
-        return;
-    }
+    let key = e.target.name;
+    setInput(prevState => ({ ...prevState, [key]: e.target.value }));
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number, id: nanoid() });
-    setName('');
-    setNumber('');
+    onSubmit({ ...input, id: nanoid() });
+    setInput({ name: '', number: '' });
   };
 
   return (
@@ -35,7 +25,7 @@ function Form({ onSubmit }) {
         <input
           className={style.nameInput}
           onChange={handleInputChange}
-          value={name}
+          value={input.name}
           type="text"
           name="name"
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
@@ -48,7 +38,7 @@ function Form({ onSubmit }) {
         <input
           className={style.numberInput}
           onChange={handleInputChange}
-          value={number}
+          value={input.number}
           type="tel"
           name="number"
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
